@@ -1,4 +1,5 @@
 #python pwzn2.py 100 1 10 0 100 0.5 -a animation -m magnetization
+#python pwzn2.py 500 1 10 0 100 0.5 -a animation for numba compare
 
 import rich
 import argparse
@@ -6,6 +7,7 @@ import numpy as np
 import random as rn
 from PIL import Image
 from rich.progress import track
+import time
 
 rich.get_console().clear()
 
@@ -77,6 +79,7 @@ class simulation:
 
     def run(self):
         frames = []
+        start = time.time()
         if not self.magnetiztion_name == None:
             with open(self.magnetiztion_name + '.txt', 'w') as file:
                 file.write(str(self.M()) + " " + str(self.step) + "\n")
@@ -92,7 +95,7 @@ class simulation:
                     image = self.make_image()
                     frames.append(image)
                     self.makro_step()
-
+        print(time.time()-start)
         if not self.animation_name == None:
             frames[0].save((self.animation_name + '.gif'), save_all=True, append_images=frames[1:], duration=100, loop=0)
 
